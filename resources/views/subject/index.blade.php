@@ -1,0 +1,187 @@
+@extends('layouts.main')
+
+@section('content')
+    <script type="module">
+        $(function() {
+            var dataTableSubjects = $('#subjects-table'),
+                dt_subjects;
+
+            if (dataTableSubjects.length) {
+                dt_subjects = dataTableSubjects.DataTable({
+                    ajax: "{{ route('subject') }}",
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            title: 'No.'
+                        },
+                        {
+                            data: 'course.name',
+                            title: 'Course Name'
+                        },
+                        {
+                            data: 'name',
+                            title: 'Subject Name'
+                        },
+                        {
+                            data: 'description',
+                            title: 'Description'
+                        },
+                        {
+                            data: 'status',
+                            title: 'Status'
+                        },
+                        {
+                            data: '',
+                            title: 'Actions'
+                        },
+                    ],
+                    columnDefs: [{
+                            targets: 4,
+                            render: function(data, type, full, meta) {
+                                var $checkedStatus = full['status'] == 1 ? 'checked' : '';
+                                var $nameStatus = full['status'] == 1 ? 'Yes' : 'No';
+                                var isDisabled =
+                                    'onclick="updateActiveStatus(&#39;/subject/status/' +
+                                    full['id'] + '&#39;, &#39;subjects&#39;)"';
+                                return '<label class="switch">' +
+                                    '<input  type="checkbox" ' + isDisabled + $checkedStatus +
+                                    ' class="switch-input">' +
+                                    '<span class="switch-toggle-slider">' +
+                                    '<span class="switch-on">' +
+                                    '<i class="ti ti-check"></i>' +
+                                    '</span>' +
+                                    '<span class="switch-off">' +
+                                    '<i class="ti ti-x"></i>' +
+                                    '</span>' +
+                                    '</span>' +
+                                    '<span class="switch-label">' + $nameStatus + '</span>' +
+                                    '</label>';
+                            }
+                        },
+                        // {
+                        //     targets: -1,
+                        //     searchable: false,
+                        //     orderable: false,
+                        //     render: function(data, type, full, meta) {
+                        //         return (
+                        //             '<span class="text-nowrap">' +
+                        //             '<button class="btn btn-sm btn-icon me-2" onclick="edit(\'/subject/edit/' +
+                        //             full['id'] + '\', \'modal-lg\')">' +
+                        //             '<i class="ti ti-edit"></i></button>' +
+                        //             '<button class="btn btn-sm btn-icon delete-record" onclick="destry(\'/subject/destroy/' +
+                        //             full['id'] + '\', \'subjects-table\')">' +
+                        //             '<i class="ti ti-trash"></i></button></span>'
+                        //         );
+                        //     }
+                        // }
+                        {
+                            targets: -1,
+                            searchable: false,
+                            orderable: false,
+                            render: function(data, type, full, meta) {
+                                return (
+                                    '<span class="text-nowrap">' +
+                                    '<button class="btn btn-sm btn-icon me-2" onclick="edit(\'/subject/edit/' +
+                                    full['id'] + '\', \'modal-lg\')" title="Edit">' +
+                                    '<i class="ti ti-edit"></i></button>' +
+                                    '<button class="btn btn-sm btn-icon me-2 delete-record" onclick="destry(\'/subject/destroy/' +
+                                    full['id'] + '\', \'subjects-table\')" title="Delete">' +
+                                    '<i class="ti ti-trash"></i></button>' +
+                                    '<button class="btn btn-sm btn-icon me-2" onclick="manageVideos(' +
+                                    full['id'] + ')" title="Videos">' +
+                                    '<i class="ti ti-video"></i></button>' +
+                                    '<button class="btn btn-sm btn-icon me-2" onclick="manageNotes(' +
+                                    full['id'] + ')" title="Notes">' +
+                                    '<i class="ti ti-file"></i></button>' +
+                                    '<button class="btn btn-sm btn-icon" onclick="manageEbook(' +
+                                    full['id'] + ')" title="E-Book">' +
+                                    '<i class="ti ti-book"></i></button>' +
+                                    '</span>'
+                                );
+                            }
+                        }
+
+
+                    ],
+                    aaSorting: false,
+                    dom: '<"row mx-1"' +
+                        '<"col-sm-12 col-md-3" l>' +
+                        '<"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-3"f>B>>' +
+                        '>t' +
+                        '<"row mx-2"' +
+                        '<"col-sm-12 col-md-6"i>' +
+                        '<"col-sm-12 col-md-6"p>' +
+                        '>',
+                    language: {
+                        sLengthMenu: 'Show _MENU_',
+                        search: 'Search',
+                        searchPlaceholder: 'Search..'
+                    },
+                    buttons: [{
+                        text: 'Add Subject',
+                        className: 'add-new btn btn-primary mb-3 mb-md-0 waves-effect waves-light',
+                        attr: {
+                            'onclick': "add('{{ route('subject.create') }}', 'modal-lg')"
+                        },
+                        init: function(api, node, config) {
+                            $(node).removeClass('btn-secondary');
+                        }
+                    }],
+                    responsive: {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function(row) {
+                                    var data = row.data();
+                                    return 'Details of ' + data['name'];
+                                }
+                            }),
+                            type: 'column',
+                            renderer: function(api, rowIdx, columns) {
+                                var data = $.map(columns, function(col, i) {
+                                    return col.title !== '' ? '<tr data-dt-row="' + col
+                                        .rowIndex +
+                                        '" data-dt-column="' + col.columnIndex + '">' +
+                                        '<td>' + col.title + ':</td> ' +
+                                        '<td>' + col.data + '</td>' +
+                                        '</tr>' : '';
+                                }).join('');
+                                return data ? $('<table class="table"/><tbody />').append(data) : false;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        function manageNotes(subjectId) {
+            var url = "{{ route('subjectnote') }}?id=" + subjectId;
+            window.location.href = url;
+        }
+        function manageVideos(videoId) {
+        let url = "{{ route('subjectvideo') }}?id=" + videoId;;
+        window.location.href = url;
+    }
+    function manageEbook(ebookId) {
+        let url = "{{ route('ebook') }}?id=" + ebookId;
+        window.location.href = url;
+    }
+    </script>
+
+    <h4 class="mb-4">Subjects List</h4>
+    <div class="card">
+        <div class="card-datatable table-responsive">
+            <table id="subjects-table" class="table border-top">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Course Name</th>
+                        <th>Subject Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+@endsection

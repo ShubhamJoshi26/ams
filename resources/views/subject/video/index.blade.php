@@ -1,0 +1,261 @@
+@extends('layouts.main')
+
+@section('content')
+<script type="module">
+    $(function() {
+            var dataTableVideos = $('#videos-table'),
+                dt_videos;
+
+            if (dataTableVideos.length) {
+                dt_videos = dataTableVideos.DataTable({
+                    // ajax: "{{ route('subjectvideo') }}",
+                    ajax: {
+                        url: "{{ route('subjectvideo') }}",
+                        data: function(d) {
+                            d.id = new URLSearchParams(window.location.search).get('id');
+                        }
+                    },
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            title: 'No.'
+                        },
+                        {
+                            data: 'name',
+                            title: 'Video Name'
+                        },
+                        {
+                            data: 'subject.name',
+                            title: 'Subject'
+                        },
+                        {
+                            data: 'user.name',
+                            title: 'Uploader'
+                        },
+                        {
+                            data: 'upload_type',
+                            title: 'Upload Type'
+                        },
+                        {
+                            data: 'video_url',
+                            title: 'Video'
+                        },
+                        {
+                            data: '',
+                            title: 'Actions'
+                        }
+                    ],
+                    columnDefs: [
+                        // {
+                        //     targets: 5,
+                        //     render: function(data, type, full, meta) {
+                        //         if (full['upload_type'] === 'youtube') {
+                        //             // return '<iframe width="200" height="100" src="' + full[
+                        //             //         'video_url'] +
+                        //             //     '" frameborder="0" allowfullscreen></iframe>';
+                        //             return '<a href="' + full['video_url'] + '" target="_blank">' + full['video_url'] + '</a>';
+
+                        //         } else {
+                        //             return '<video width="200" controls><source src="' + full[
+                        //                 'video_url'] + '" type="video/mp4"></video>';
+                        //         }
+                        //     }
+                        // },
+                        {
+                            targets: 5,
+                            render: function(data, type, full, meta) {
+                                return `<button class="btn btn-sm btn-primary" onclick="showVideo('${full.video_url}', '${full.upload_type}')">See Upload</button>`;
+                            }
+                        },
+
+
+
+                        {
+                            targets: -1,
+                            searchable: false,
+                            orderable: false,
+                            render: function(data, type, full, meta) {
+                                return (
+                                    '<span class="text-nowrap">' +
+                                    '<button class="btn btn-sm btn-icon me-2" onclick="edit(\'/subjectvideo/edit/' +
+                                    full['id'] + '\', \'modal-lg\')" title="Edit">' +
+                                    '<i class="ti ti-edit"></i></button>' +
+                                    '<button class="btn btn-sm btn-icon me-2 delete-record" onclick="destry(\'/subjectvideo/destroy/' +
+                                    full['id'] + '\', \'videos-table\')" title="Delete">' +
+                                    '<i class="ti ti-trash"></i></button>' +
+                                    '</span>'
+                                );
+                            }
+                        }
+                    ],
+                    aaSorting: false,
+                    dom: '<"row mx-1"' +
+                        '<"col-sm-12 col-md-3" l>' +
+                        '<"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-3"f>B>>' +
+                        '>t' +
+                        '<"row mx-2"' +
+                        '<"col-sm-12 col-md-6"i>' +
+                        '<"col-sm-12 col-md-6"p>' +
+                        '>',
+                    language: {
+                        sLengthMenu: 'Show _MENU_',
+                        search: 'Search',
+                        searchPlaceholder: 'Search..'
+                    },
+                    buttons: [{
+                        text: 'Add Video',
+                        className: 'add-new btn btn-primary mb-3 mb-md-0 waves-effect waves-light',
+                        attr: {
+                            'onclick': "add('{{ route('subjectvideo.create') }}', 'modal-lg')"
+                        },
+                        init: function(api, node, config) {
+                            $(node).removeClass('btn-secondary');
+                        }
+                    }],
+                    responsive: {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function(row) {
+                                    var data = row.data();
+                                    return 'Details of ' + data['name'];
+                                }
+                            }),
+                            type: 'column',
+                            renderer: function(api, rowIdx, columns) {
+                                var data = $.map(columns, function(col, i) {
+                                    return col.title !== '' ? '<tr data-dt-row="' + col
+                                        .rowIndex +
+                                        '" data-dt-column="' + col.columnIndex + '">' +
+                                        '<td>' + col.title + ':</td> ' +
+                                        '<td>' + col.data + '</td>' +
+                                        '</tr>' : '';
+                                }).join('');
+                                return data ? $('<table class="table"/><tbody />').append(data) : false;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+</script>
+{{-- <script>
+    function showVideo(videoUrl, uploadType) {
+            let videoContent = '';
+
+            if (uploadType === 'youtube') {
+                videoContent =
+                    `<iframe width="100%" height="400" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+                videoContent = `<video width="100%" controls><source src="${videoUrl}" type="video/mp4"></video>`;
+            }
+
+            $('#videoContainer').html(videoContent);
+            $('#videoModal').modal('show');
+        }
+</script> --}}
+
+
+{{-- for both youtube and normal video URLs and embeded YouTube URLs --}}
+{{-- <script>
+    function showVideo(videoUrl, uploadType) {
+            let videoContent = '';
+
+            if (uploadType === 'youtube') {
+                // Handle normal and embed YouTube URLs
+                if (videoUrl.includes('watch?v=')) {
+                    const videoId = videoUrl.split('watch?v=')[1].split('&')[0];
+                    videoUrl = `https://www.youtube.com/embed/${videoId}`;
+                } else if (videoUrl.includes('youtu.be/')) {
+                    const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                    videoUrl = `https://www.youtube.com/embed/${videoId}`;
+                }
+                // For already embedded URLs, keep as-is
+
+                videoContent =
+                    `<iframe width="100%" height="400" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+                videoContent = `<video width="100%" controls><source src="${videoUrl}" type="video/mp4"></video>`;
+            }
+
+            $('#videoContainer').html(videoContent);
+            $('#videoModal').modal('show');
+        }
+</script> --}}
+
+<script>
+    function showVideo(videoUrl, uploadType) {
+        let videoContent = '';
+
+        if (uploadType === 'youtube') {
+            // Handle YouTube URLs
+            if (videoUrl.includes('watch?v=')) {
+                const videoId = videoUrl.split('watch?v=')[1].split('&')[0];
+                videoUrl = `https://www.youtube.com/embed/${videoId}`;
+            } else if (videoUrl.includes('youtu.be/')) {
+                const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                videoUrl = `https://www.youtube.com/embed/${videoId}`;
+            }
+            videoContent = `<iframe width="100%" height="400" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
+        } else if (uploadType === 'drive_link') {
+            // Support both preview and download links
+            let fileIdMatch = videoUrl.match(/id=([a-zA-Z0-9_-]+)/);
+            if (!fileIdMatch) {
+                fileIdMatch = videoUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            }
+
+            if (fileIdMatch && fileIdMatch[1]) {
+                const fileId = fileIdMatch[1];
+                const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                videoContent = `<iframe width="100%" height="400" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+            } else {
+                videoContent = `<p class="text-danger">Invalid Google Drive URL</p>`;
+            }
+        } else {
+            // Local video file
+            videoContent = `<video width="100%" controls><source src="${videoUrl}" type="video/mp4">Your browser does not support the video tag.</video>`;
+        }
+
+        $('#videoContainer').html(videoContent);
+        $('#videoModal').modal('show');
+    }
+</script>
+
+
+
+
+<h4 class="mb-4">Subject Videos</h4>
+<div class="card">
+    <div class="card-datatable table-responsive">
+        <table id="videos-table" class="table border-top">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Video Name</th>
+                    <th>Subject</th>
+                    <th>Uploader</th>
+                    <th>Upload Type</th>
+                    <th>Video</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+
+
+<!-- Video Modal (Place it here, before ) -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Watch Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="videoContainer" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
