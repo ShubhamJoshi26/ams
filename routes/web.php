@@ -28,7 +28,7 @@ use App\Http\Controllers\DashboardController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('content.index');
 });
 
@@ -280,3 +280,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/get-courses', [SubjectVideoController::class, 'getCourses'])->name('getCourses');
     Route::get('/get-subjects', [SubjectVideoController::class, 'getSubjects'])->name('getSubjects');
 });
+Route::view('/', 'web-pages.index')->name('home');
