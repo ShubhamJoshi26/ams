@@ -280,4 +280,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/get-courses', [SubjectVideoController::class, 'getCourses'])->name('getCourses');
     Route::get('/get-subjects', [SubjectVideoController::class, 'getSubjects'])->name('getSubjects');
 });
-Route::view('/', 'web-pages.index')->name('home');
+@include 'front.php';

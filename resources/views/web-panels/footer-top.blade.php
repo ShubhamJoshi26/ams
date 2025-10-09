@@ -1,49 +1,41 @@
- <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h3 class="navbar-brand mb-3">CertifyPro</h3>
-                    <p>Build skills, earn credentials, and move your career forward.</p>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h5 class="footer-heading">Company</h5>
-                    <div class="footer-links">
-                        <a href="#">About</a>
-                        <a href="#">Careers</a>
-                        <a href="#">Press</a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h5 class="footer-heading">Resources</h5>
-                    <div class="footer-links">
-                        <a href="#">Help Center</a>
-                        <a href="#">Blog</a>
-                        <a href="#">Guides</a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h5 class="footer-heading">Legal</h5>
-                    <div class="footer-links">
-                        <a href="#">Privacy</a>
-                        <a href="#">Terms</a>
-                        <a href="#">Cookies</a>
-                    </div>
-                </div>
-                <div class="col-lg-2 mb-4">
-                    <h5 class="footer-heading">Connect</h5>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-muted"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-muted"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="text-muted"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h4 class="fw-bold mb-3">CertifyPro</h4>
+                <p class="text-secondary">Build skills, earn credentials, and move your career forward.</p>
             </div>
-            <div class="copyright text-center">
-                <p>&copy; 2025 CertifyPro. All rights reserved.</p>
+            <div class="col-md-4 col-lg-2 mb-4 mb-lg-0">
+                <h6 class="fw-bold mb-3">Company</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">About</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Careers</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Press</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-lg-2 mb-4 mb-lg-0">
+                <h6 class="fw-bold mb-3">Resources</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Help Center</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Guides</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-lg-2 mb-4 mb-lg-0">
+                <h6 class="fw-bold mb-3">Legal</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Privacy</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Terms</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Cookies</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
-
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <hr class="my-4" style="border-color: rgba(148, 163, 184, 0.1);">
+        <p class="text-center text-secondary mb-0">© 2025 CertifyPro. All rights reserved.</p>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{{ asset('assets/js/web.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
