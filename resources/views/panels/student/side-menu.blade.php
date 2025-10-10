@@ -3,8 +3,8 @@
     <div class="app-brand demo">
         <div class="d-flex align-items-center">
             {{-- <i class="ti ti-apps fs-3 text-primary"></i> --}}
-            <img src="{{ asset('assets/img/logo/sanidhya_logo.jpg') }}" alt="Skill App Logo" style="height: 60px; width: auto;" />
-            {{-- <h4 class="mb-0 ms-2">Skill App</h4> --}}
+            <img src="{{ asset('assets/img/logo/logo 3.jpg') }}" alt="Skill App Logo" style="height: 60px; width: auto;" />
+            <h4 class="mb-0 ms-2">Skill App</h4>
         </div>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
             <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
@@ -21,15 +21,21 @@
         </li>
 
         <!-- Dashboard -->
-        <li class="menu-item {{ Route::is('dashboard') ? 'active' : '' }}">
-            <a href="{{ route('dashboard') }}" class="menu-link">
+        <li class="menu-item {{ Route::is('student.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('student.dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ Route::is('student.profile') ? 'active' : '' }}">
+            <a href="{{ route('student.profile') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="Profile">Profile</div>
+            </a>
+        </li>
 
         <!-- Admission Management -->
-        <li class="menu-item {{ Route::is('student*') ? 'active open' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('student*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-users"></i>
                 <div data-i18n="Admission Management">Admission Management</div>
@@ -54,13 +60,13 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Divider -->
         <li class="menu-divider"></li>
 
         <!-- Course Management -->
-        <li class="menu-item {{ Route::is('coursetype*', 'category*', 'course*', 'subject*') ? 'active open' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('coursetype*', 'category*', 'course*', 'subject*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-book"></i>
                 <div data-i18n="Course Management">Course Management</div>
@@ -91,10 +97,10 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Learning Materials Hub -->
-        <li class="menu-item {{ Route::is('subjectvideo*', 'subjectnote*', 'ebook*') ? 'active open' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('subjectvideo*', 'subjectnote*', 'ebook*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-file-text"></i>
                 <div data-i18n="Learning Materials Hub">Learning Materials Hub</div>
@@ -119,18 +125,18 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Payment Management -->
-        <li class="menu-item {{ Route::is('payment*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('payment*') ? 'active' : '' }}">
             <a href="{{ route('payment') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-currency-rupee"></i>
                 <div data-i18n="Payment Management">Payment Management</div>
             </a>
-        </li>
+        </li> --}}
 
         <!-- Support System -->
-        <li
+        {{-- <li
             class="menu-item {{ Route::is('news*', 'slider*', 'faq*', 'studentquery*', 'term*', 'privacy*', 'contact*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-headset"></i>
@@ -180,7 +186,7 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         {{-- <!-- System Settings -->
         <li class="menu-header small text-uppercase mt-4">
@@ -215,11 +221,11 @@
             </ul>
         </li> --}}
 
-        @php
+        {{-- @php
             $user = Auth::user();
-        @endphp
+        @endphp --}}
 
-        @if ($user && $user->hasRole('Super Admin'))
+        {{-- @if ($user && $user->hasRole('Super Admin'))
             <!-- System Settings -->
             <li class="menu-header small text-uppercase mt-4">
                 <span class="menu-header-text">System Settings</span>
@@ -250,7 +256,7 @@
                     </li>
                 </ul>
             </li>
-        @endif
+        @endif --}}
 
     </ul>
 </aside>

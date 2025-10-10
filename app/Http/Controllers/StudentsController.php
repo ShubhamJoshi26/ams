@@ -15,9 +15,7 @@ use App\Http\Controllers\OTPController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
-
-
+use Illuminate\Support\Facades\Hash;
 
 class StudentsController extends Controller
 {
@@ -141,7 +139,7 @@ class StudentsController extends Controller
 
 
 
-    public function getStudentDetails($mobile)
+    public static function getStudentDetails($mobile)
     {
         try {
             // $student = Students::where('mobile', $mobile)->with('progress')->first();
@@ -757,6 +755,7 @@ class StudentsController extends Controller
                 'image' => $imagePath,
                 'signature' => $signaturePath,
                 'added_by' => Auth::user()->id,
+                'password' => Hash::make($request->mobile),
                 'status' => 1, // Default active status
             ]);
             // dd($student);
@@ -783,11 +782,13 @@ class StudentsController extends Controller
         return view('students.profile', compact('student'));
     }
 
-    public function profile($id)
+    public function profile()
     {
-        $student = Students::with('studentCourses.course')->findOrFail($id);
-
-        return view('students.profile', compact('student'));
+        $id = Auth::guard('student')->user()->id;
+        $student = Students::with('studentCourses')->findOrFail($id);
+        $studentOtherData = self::getStudentDetails(Auth::guard('student')->user()->mobile)->getData();
+        // dd($studentOtherData->data);
+        return view('students.profile', compact('student','studentOtherData'));
     }
 
 
@@ -875,6 +876,7 @@ class StudentsController extends Controller
                 'heighest_qualification' => $request->heighest_qualification,
                 'image' => $imagePath,
                 'signature' => $signaturePath,
+                'password' => Hash::make($request->mobile)
             ]);
 
             return response()->json([
@@ -1078,7 +1080,7 @@ class StudentsController extends Controller
                 $student->save();
                 return response()->json([
                     'status' => 'success',
-                    'message' => $student->name . ' Deleted successfully!',
+                    'message' => $student->name . ' Status Update Successfully!',
                 ]);
             } else {
                 return response()->json([
@@ -1138,4 +1140,50 @@ class StudentsController extends Controller
             return response()->json(['message' => 'Session validated successfully']);
         }
 
+        public function dashboard(){
+            $student = Auth::guard('student')->user();
+            return view('students.dashboard',compact('student'));
+        }
+
+        public function editProfile(){
+            $student = Auth::guard('student')->user();
+            return view('students.edit_profile',compact('student'));
+        }
+        public function editImage(){
+            return view('students.edit_image');
+        }
+
+        public function updateImage(Request $request){
+             $validated = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        try {
+            // Find student record
+            $student = Students::findOrFail(Auth::guard('student')->user()->id);
+
+            $imagePath = $student->image;
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $imagePath = $this->uploadImage($request->file('image'), 'students/images');
+            }
+
+           
+            // Update student details
+            $student->update([
+                'image' => $imagePath,                
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Profile updated successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
+        }
+        }
 }
