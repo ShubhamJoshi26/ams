@@ -8,11 +8,11 @@
     --primary-color: #070052;
     --secondary-color: #ffb800;
 }
-.btn-primary{
+.btn-primary {
     background-color: var(--primary-color) !important;
     color: white !important;
 }
-.btn-secondary{
+.btn-secondary {
     background-color: var(--secondary-color) !important;
     color: white !important;
 }
@@ -43,8 +43,6 @@ body {
 .nav-link:hover {
     color: var(--secondary-color) !important;
 }
-
-
 
 /* Hero Section */
 .hero-section {
@@ -360,64 +358,243 @@ footer h6 {
     box-shadow: 0 0 0 0.2rem rgba(255, 184, 0, 0.25);
 }
 .cta-section {
-  position: relative;
-  overflow: hidden;
-  /* border-radius: 1rem; */
-  transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    /* border-radius: 1rem; */
+    transition: all 0.3s ease;
 }
 
 .cta-section:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .cta-section a.btn {
-  transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .cta-section a.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 .event-card {
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor: pointer;
-  border-radius: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    border-radius: 1rem;
 }
 
 .event-card img {
-  transition: transform 0.4s ease;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+    transition: transform 0.4s ease;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 .event-card:hover img {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 0.3s;
-  border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 1rem;
 }
 
 .event-card:hover .overlay {
-  opacity: 1;
+    opacity: 1;
 }
 
 .overlay .btn {
-  padding: 0.6rem 1.8rem;
-  font-weight: 600;
-  border-radius: 50px;
+    padding: 0.6rem 1.8rem;
+    font-weight: 600;
+    border-radius: 50px;
 }
-@media(max-width: 650px){
-.footer {
-    border-top-left-radius: 0px ;
-    border-top-right-radius: 0px ;
+@media (max-width: 650px) {
+    .footer {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
 }
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+.text-primary {
+    color: var(--primary-color) !important;
+}
+.btn-outline-primary {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+.btn-outline-primary:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+.btn-outline-secondary {
+    color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+}
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+}
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+}
+.event-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.event-card img {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.event-card:hover img {
+    transform: scale(1.05);
+}
+
+.event-card .card-body {
+    padding: 20px;
+}
+
+.event-card .btn-teal {
+    background-color: var(--teal-color);
+    color: #fff;
+    border: none;
+    transition: background 0.3s;
+}
+
+.event-card .btn-teal:hover {
+    background-color: #00796b;
+}
+
+/* Overlay CTA on Hover */
+.event-card .overlay {
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.event-card:hover .overlay {
+    opacity: 1;
+}
+
+/* Article Cards */
+.article-card {
+    border: none;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.article-card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.article-card img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.article-card .card-body {
+    padding: 20px;
+}
+.banner-swiper {
+    width: 100%;
+    height: 60vh;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.banner-slide {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: end;
+    justify-content: start;
+    color: #fff;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.banner-overlay h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.banner-overlay p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .banner-overlay h1 {
+        font-size: 1.8rem;
+    }
+    .banner-overlay p {
+        font-size: 1rem;
+    }
+}
+
+/* Event Cards */
+.event-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.event-card img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.event-card:hover .overlay {
+    opacity: 1;
+}
+
+.text-teal {
+    color: #009688 !important;
+}
+.text-bg-danger {
+    color: #fff !important;
+    background-color: rgb(255 0 24) !important;
 }
