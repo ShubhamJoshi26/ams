@@ -49,7 +49,7 @@
 
 
                 <!-- Language -->
-                <li class="nav-item dropdown-language dropdown">
+                {{-- <li class="nav-item dropdown-language dropdown">
                     <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow"
                         href="javascript:void(0);" data-bs-toggle="dropdown">
                         <i class='ti ti-language rounded-circle ti-md'></i>
@@ -80,11 +80,11 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <!--/ Language -->
 
                 <!-- Style Switcher -->
-                <li class="nav-item dropdown-style-switcher dropdown">
+                {{-- <li class="nav-item dropdown-style-switcher dropdown">
                     <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow"
                         href="javascript:void(0);" data-bs-toggle="dropdown">
                         <i class='ti ti-md'></i>
@@ -107,11 +107,11 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <!-- / Style Switcher-->
 
                 <!-- Quick links  -->
-                <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
+                {{-- <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
                     <a class="nav-link btn btn-text-secondary btn-icon rounded-pill btn-icon dropdown-toggle hide-arrow"
                         href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                         aria-expanded="false">
@@ -194,7 +194,7 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <!-- Quick links -->
 
                 <!-- Notification -->
@@ -521,14 +521,16 @@
 
                         </div>
                     </a>
+                   
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0 me-2">
                                         <div class="avatar avatar-online">
+                                            
                                             {{-- <img src="../../assets/img/avatars/1.png" alt class="rounded-circle"> --}}
-                                            <img src="{{ Auth::user()->profile_photo_path ?? asset('../../assets/img/avatars/default.png') }}" alt="" class="rounded-circle">
+                                            <img src="{{ Auth::user()->profile_photo_path ?? asset('/assets/img/avatars/default.png') }}" alt="" class="rounded-circle">
 
                                         </div>
                                     </div>

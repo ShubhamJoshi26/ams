@@ -81,10 +81,10 @@ class StudentsController extends Controller
                 $data = Students::with('studentCourses')->orderBy('id', 'desc')->get();
             } else {
                 $userId = Auth::id();
-    
+
                 // Get courses added by current user
                 $course_ids = Course::where('added_by', $userId)->pluck('id');
-    
+
                 // Get students either:
                 // - assigned to those courses, OR
                 // - added directly by current user
@@ -93,12 +93,12 @@ class StudentsController extends Controller
                         $query->whereHas('studentCourses', function ($q) use ($course_ids) {
                             $q->whereIn('course_id', $course_ids);
                         })
-                        ->orWhere('added_by', $userId);
+                            ->orWhere('added_by', $userId);
                     })
                     ->orderBy('id', 'desc')
                     ->get();
             }
-    
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('is_enrolled', function ($data) {
@@ -109,10 +109,10 @@ class StudentsController extends Controller
                 })
                 ->make(true);
         }
-    
+
         return view('students.index');
     }
-    
+
     /**
      * Get all course wise subjects and subject wise e-books, notes, videos API
      */
@@ -463,61 +463,61 @@ class StudentsController extends Controller
                 ->where('status', 1)
                 ->with('progress', 'progress.course', 'progress.course.users')
                 ->first();
-    
+
             if (!$student) {
                 return response()->json(['status' => 'error', 'message' => 'No student found with this mobile number']);
             }
-    
+
             $enrolledCourses = StudentCourse::where('student_id', $student->id)
                 ->with('course', 'course.users')
                 ->get();
-    
+
             $completedCourses = [];
             $onGoingCourses = [];
-    
+
             foreach ($enrolledCourses as $enrolled) {
                 $courseId = $enrolled->course_id;
-    
+
                 $subjectIds = Subject::where('course_id', $courseId)->pluck('id');
-    
+
                 // Get total duration from subject_videos using subject IDs
                 $totalDuration = SubjectVideo::whereIn('subject_id', $subjectIds)->sum('duration');
-    
+
                 // Get total watch time from StudentProgress
                 $totalWatchTime = StudentProgress::where('student_id', $student->id)
                     ->whereIn('subject_id', $subjectIds)
                     ->sum('watch_time');
-    
+
                 // Calculate progress percentage
                 $progress = ($totalDuration > 0) ? round(($totalWatchTime / $totalDuration) * 100, 2) : 0;
                 $status = $progress >= 90 ? 'Completed' : 'Ongoing';
-    
+
                 // Append progress details inside each enrolled course object
                 $enrolled->total_watch_time = $totalWatchTime;
                 $enrolled->total_duration = $totalDuration;
                 $enrolled->progress = $progress;
                 $enrolled->status = $status;
-    
+
                 if ($status === 'Completed') {
                     $completedCourses[] = $enrolled;
                 } else {
                     $onGoingCourses[] = $enrolled;
                 }
             }
-    
+
             // Calculate average progress for each category
             $enrolledProgressAvg = $enrolledCourses->count() > 0
                 ? round($enrolledCourses->pluck('progress')->sum() / $enrolledCourses->count(), 2)
                 : 0;
-    
+
             $onGoingProgressAvg = count($onGoingCourses) > 0
                 ? round(collect($onGoingCourses)->pluck('progress')->sum() / count($onGoingCourses), 2)
                 : 0;
-    
+
             $completedProgressAvg = count($completedCourses) > 0
                 ? round(collect($completedCourses)->pluck('progress')->sum() / count($completedCourses), 2)
                 : 0;
-    
+
             return response()->json([
                 'status' => 'success',
                 'data' => [
@@ -536,7 +536,7 @@ class StudentsController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
-    
+
 
 
     // ****to show ongoing and completed courses separately.
@@ -788,7 +788,7 @@ class StudentsController extends Controller
         $student = Students::with('studentCourses')->findOrFail($id);
         $studentOtherData = self::getStudentDetails(Auth::guard('student')->user()->mobile)->getData();
         // dd($studentOtherData->data);
-        return view('students.profile', compact('student','studentOtherData'));
+        return view('students.profile', compact('student', 'studentOtherData'));
     }
 
 
@@ -1122,39 +1122,43 @@ class StudentsController extends Controller
     }
 
 
-        public function checkSession(Request $request)
-        {
-            $student = auth('student')->user();
-            $mobileId = $request->header('Mobile-ID');
-            $sessionId = $request->header('Session-ID');
-            $expectedToken = hash('sha256', $request->userAgent() . $mobileId);
-    
-            if (
-                $student->device_token !== $expectedToken ||
-                $student->mobile_id !== $mobileId ||
-                $student->session_id !== $sessionId
-            ) {
-                return response()->json(['message' => 'Invalid session or device.'], 403);
-            }
-    
-            return response()->json(['message' => 'Session validated successfully']);
+    public function checkSession(Request $request)
+    {
+        $student = auth('student')->user();
+        $mobileId = $request->header('Mobile-ID');
+        $sessionId = $request->header('Session-ID');
+        $expectedToken = hash('sha256', $request->userAgent() . $mobileId);
+
+        if (
+            $student->device_token !== $expectedToken ||
+            $student->mobile_id !== $mobileId ||
+            $student->session_id !== $sessionId
+        ) {
+            return response()->json(['message' => 'Invalid session or device.'], 403);
         }
 
-        public function dashboard(){
-            $student = Auth::guard('student')->user();
-            return view('students.dashboard',compact('student'));
-        }
+        return response()->json(['message' => 'Session validated successfully']);
+    }
 
-        public function editProfile(){
-            $student = Auth::guard('student')->user();
-            return view('students.edit_profile',compact('student'));
-        }
-        public function editImage(){
-            return view('students.edit_image');
-        }
+    public function dashboard()
+    {
+        $student = Auth::guard('student')->user();
+        return view('students.dashboard', compact('student'));
+    }
 
-        public function updateImage(Request $request){
-             $validated = $request->validate([
+    public function editProfile()
+    {
+        $student = Auth::guard('student')->user();
+        return view('students.edit_profile', compact('student'));
+    }
+    public function editImage()
+    {
+        return view('students.edit_image');
+    }
+
+    public function updateImage(Request $request)
+    {
+        $validated = $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
@@ -1169,10 +1173,10 @@ class StudentsController extends Controller
                 $imagePath = $this->uploadImage($request->file('image'), 'students/images');
             }
 
-           
+
             // Update student details
             $student->update([
-                'image' => $imagePath,                
+                'image' => $imagePath,
             ]);
 
             return response()->json([
@@ -1185,5 +1189,16 @@ class StudentsController extends Controller
                 'message' => 'Something went wrong: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function studentCourse(){
+        try{
+            $id = Auth::guard('student')->user()->id;
+            $student = Students::with('studentCourses')->findOrFail($id);
+            $studentOtherData = self::getStudentDetails(Auth::guard('student')->user()->mobile)->getData();
+            return view('students.mycourses',compact('student','studentOtherData'));
+        }catch(\Exception $e){
+
         }
+    }
 }

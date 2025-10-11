@@ -33,6 +33,12 @@
                 <div data-i18n="Profile">Profile</div>
             </a>
         </li>
+        <li class="menu-item {{ Route::is('student.mycourses') ? 'active' : '' }}">
+            <a href="{{ route('student.mycourses') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="My Courses">My Courses</div>
+            </a>
+        </li>
 
         <!-- Admission Management -->
         {{-- <li class="menu-item {{ Route::is('student*') ? 'active open' : '' }}">

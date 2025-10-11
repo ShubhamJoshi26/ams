@@ -69,6 +69,7 @@ Route::prefix('student')->name('student.')->group(function () {
         Route::post('/update/image',[StudentsController::class,'updateImage'])->name('update.image');
         Route::get('/edit/profile',[StudentsController::class,'editProfile'])->name('edit.profile');
         Route::post('/update/profile/{id}',[StudentsController::class,'updateStudents'])->name('update.profile');
+        Route::get('/mycourses',[StudentsController::class,'studentCourse'])->name('mycourses');
     });
 });
 
