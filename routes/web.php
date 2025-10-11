@@ -28,7 +28,7 @@ use App\Http\Controllers\DashboardController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/login', function () {
+Route::get('/admin/login', function () {
     return view('content.index');
 });
 

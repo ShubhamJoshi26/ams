@@ -138,17 +138,6 @@
         </div>
     </div>
 </section>
-
-<!-- 🌟 CTA Section -->
-<section class="mt-5 pb-5" style="padding-top: 80px; background-color: var(--primary-color); color: white;">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-3">Don’t Miss Our Upcoming Events</h2>
-        <p class="lead mb-4">Stay ahead in the tech world — Join our next event or subscribe for updates.</p>
-        <a href="#" class="btn btn-light px-4 py-2 fw-semibold">Explore More Events</a>
-    </div>
-</section>
-
 @endsection
-
 @section('scripts')
 @endsection

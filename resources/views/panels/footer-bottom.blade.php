@@ -28,12 +28,13 @@
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
     }
+
     function add(url, modal) {
         if (modal.length > 0) {
             $.ajax({
                 url: url,
                 type: "GET",
-                success: function (data) {
+                success: function(data) {
                     $('#' + modal + '-content').html(data);
                     $('#' + modal).modal('show');
                 }
@@ -48,14 +49,14 @@
         $.ajax({
             url: url,
             type: "GET",
-            success: function (data) {
+            success: function(data) {
                 $('#' + modal + '-content').html(data);
                 $('#' + modal).modal('show');
             }
         })
     }
 
-    
+
 
     function updateActiveStatus(url, table) {
         $.ajax({
@@ -64,7 +65,7 @@
             processData: false,
             contentType: false,
             dataType: 'json',
-            success: function (response) {
+            success: function(response) {
 
                 if (response.status == 'success') {
                     toastr.success(response.message);
@@ -82,7 +83,7 @@
         $.ajax({
             url: url,
             type: "GET",
-            success: function (data) {
+            success: function(data) {
                 $('#' + modal + '-content').html(data);
                 $('#' + modal).modal('show');
             }
@@ -93,10 +94,10 @@
         $.ajax({
             url: url,
             type: "GET",
-            success: function (response) {
+            success: function(response) {
                 if (response.status == 'success' || response.ct_status === 'success' || response
                     .le_status === 'success' || response.current_status === 'success' || response
-                        .bp_status === 'success') {
+                    .bp_status === 'success') {
                     toastr.success(response.message);
                 } else {
                     toastr.error(response.message);
@@ -118,7 +119,7 @@
                 cancelButton: 'btn btn-label-secondary waves-effect waves-light'
             },
             buttonsStyling: false
-        }).then(function (result) {
+        }).then(function(result) {
             if (result.value) {
                 $.ajax({
                     url: url,
@@ -127,7 +128,7 @@
                     data: {
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status == 'success') {
                             toastr.success(response.message);
                             if (table.length > 0) {
@@ -144,7 +145,7 @@
         });
     }
 
-    
+
     function destryStatus(url, table) {
         Swal.fire({
             title: 'Are you sure?',
@@ -157,7 +158,7 @@
                 cancelButton: 'btn btn-label-secondary waves-effect waves-light'
             },
             buttonsStyling: false
-        }).then(function (result) {
+        }).then(function(result) {
             if (result.value) {
                 $.ajax({
                     url: url,
@@ -166,7 +167,7 @@
                     data: {
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status == 'success') {
                             toastr.success(response.message);
                             if (table.length > 0) {
@@ -185,18 +186,39 @@
 </script>
 
 <script>
-
     function allot(url, modal) {
         alert(url);
         $.ajax({
             url: url,
             type: 'GET',
-            success: function (data) {
+            success: function(data) {
                 $('#' + modal + '-content').html(data);
                 $('#' + modal).modal('show');
             }
         })
     }
+
+    function toggleStatus(module, id, el) {
+    $.ajax({
+        url: '/' + module + '/' + id + '/toggle',
+        type: 'GET',
+        success: function(response) {
+            if (response.success) {
+                $(el).prop('checked', response.status);
+                $(el).next('.switch-label').text(response.status ? 'Yes' : 'No');
+                toastr.success(response.message || `${module.charAt(0).toUpperCase() + module.slice(1)} status updated!`);
+            } else {
+                toastr.error('Failed to update status!');
+            }
+        },
+        error: function() {
+            $(el).prop('checked', !$(el).prop('checked'));
+            toastr.error('Error updating status!');
+        }
+    });
+}
+
+
 </script>
 
 

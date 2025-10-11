@@ -2,7 +2,7 @@
 <section class="py-5" id="tutors">
   <div class="container">
     <div class="text-center mb-5">
-      <p class="text-secondary mb-1">Expert Instructors</p>
+      <p class="text-primary mb-1">Expert Instructors</p>
       <h2 class="fw-bold">Meet Our Tutors</h2>
     </div>
 
