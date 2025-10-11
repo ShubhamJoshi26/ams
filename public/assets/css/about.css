@@ -1,0 +1,11 @@
+.hover-zoom {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.hover-zoom:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.text-teal {
+    color: var(--primary-color) !important;
+}
