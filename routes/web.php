@@ -23,7 +23,8 @@ use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\TermsConditionController;
 use App\Http\Controllers\StudentProgressController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\Student\StudentAuthController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -55,6 +56,25 @@ Route::middleware([
 
 
 // Route::view('/table', 'users.index')->name('table');
+
+
+Route::prefix('student')->name('student.')->group(function () {
+    Route::get('/login', [StudentAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [StudentAuthController::class, 'login']);
+    Route::post('/logout', [StudentAuthController::class, 'logout'])->name('logout');
+
+    Route::middleware('auth:student')->group(function () {
+        Route::get('/dashboard', [StudentsController::class,'dashboard'])->name('dashboard');
+        Route::get('/profile',[StudentsController::class,'profile'])->name('profile');
+        Route::get('/edit_image',[StudentsController::class,'editImage'])->name('edit_image');
+        Route::post('/update/image',[StudentsController::class,'updateImage'])->name('update.image');
+        Route::get('/edit/profile',[StudentsController::class,'editProfile'])->name('edit.profile');
+        Route::post('/update/profile/{id}',[StudentsController::class,'updateStudents'])->name('update.profile');
+        Route::get('/mycourses',[StudentsController::class,'studentCourse'])->name('mycourses');
+        Route::get('/courses',[CategoryController::class,'categoriesWithCourses'])->name('courses');
+    });
+});
+
 
 Route::group(['middleware' => ['auth']], function () {
     // Roles & Permissions

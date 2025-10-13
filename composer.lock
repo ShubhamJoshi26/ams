@@ -7574,16 +7574,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v12.5.1",
+            "version": "v12.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "3fc34e8c5b2c2c700f46a2ae2644c2be1c20c8da"
+                "reference": "604b957de3776182bde1b7390018cffc3f6b947c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/3fc34e8c5b2c2c700f46a2ae2644c2be1c20c8da",
-                "reference": "3fc34e8c5b2c2c700f46a2ae2644c2be1c20c8da",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/604b957de3776182bde1b7390018cffc3f6b947c",
+                "reference": "604b957de3776182bde1b7390018cffc3f6b947c",
                 "shasum": ""
             },
             "require": {
@@ -7651,7 +7651,7 @@
             ],
             "support": {
                 "issues": "https://github.com/yajra/laravel-datatables/issues",
-                "source": "https://github.com/yajra/laravel-datatables/tree/v12.5.1"
+                "source": "https://github.com/yajra/laravel-datatables/tree/v12.6.0"
             },
             "funding": [
                 {
@@ -7659,7 +7659,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-02T06:57:54+00:00"
+            "time": "2025-10-08T02:30:51+00:00"
         }
     ],
     "packages-dev": [
@@ -10027,12 +10027,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

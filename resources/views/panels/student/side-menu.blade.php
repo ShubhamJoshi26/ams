@@ -3,8 +3,8 @@
     <div class="app-brand demo">
         <div class="d-flex align-items-center">
             {{-- <i class="ti ti-apps fs-3 text-primary"></i> --}}
-            <img src="{{ asset('assets/img/logo/sanidhya_logo.jpg') }}" alt="Skill App Logo" style="height: 43px; width: auto;" />
-            {{-- <h4 class="mb-0 ms-2">Skill App</h4> --}}
+            <img src="{{ asset('assets/img/logo/sanidhya_logo.jpg') }}" alt="Skill App Logo" style="height: 60px; width: auto;object-fit: contain;" />
+            <h4 class="mb-0 ms-2">Skill App</h4>
         </div>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
             <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
@@ -21,15 +21,33 @@
         </li>
 
         <!-- Dashboard -->
-        <li class="menu-item {{ Route::is('dashboard') ? 'active' : '' }}">
-            <a href="{{ route('dashboard') }}" class="menu-link">
+        <li class="menu-item {{ Route::is('student.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('student.dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ Route::is('student.profile') ? 'active' : '' }}">
+            <a href="{{ route('student.profile') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="Profile">Profile</div>
+            </a>
+        </li>
+        <li class="menu-item {{ Route::is('student.mycourses') ? 'active' : '' }}">
+            <a href="{{ route('student.mycourses') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="My Courses">My Courses</div>
+            </a>
+        </li>
+        <li class="menu-item {{ Route::is('student.courses') ? 'active' : '' }}">
+            <a href="{{ route('student.courses') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="Courses">Courses</div>
+            </a>
+        </li>
 
         <!-- Admission Management -->
-        <li class="menu-item {{ Route::is('student*') ? 'active open' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('student*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-users"></i>
                 <div data-i18n="Admission Management">Admission Management</div>
@@ -54,13 +72,13 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Divider -->
         <li class="menu-divider"></li>
 
         <!-- Course Management -->
-        <li class="menu-item {{ Route::is('coursetype*', 'category*', 'course*', 'subject*') ? 'active open' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('coursetype*', 'category*', 'course*', 'subject*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-book"></i>
                 <div data-i18n="Course Management">Course Management</div>
@@ -91,10 +109,10 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Learning Materials Hub -->
-        <li class="menu-item {{ Route::is('subjectvideo*', 'subjectnote*', 'ebook*') ? 'active open' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('subjectvideo*', 'subjectnote*', 'ebook*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-file-text"></i>
                 <div data-i18n="Learning Materials Hub">Learning Materials Hub</div>
@@ -119,18 +137,18 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Payment Management -->
-        <li class="menu-item {{ Route::is('payment*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('payment*') ? 'active' : '' }}">
             <a href="{{ route('payment') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-currency-rupee"></i>
                 <div data-i18n="Payment Management">Payment Management</div>
             </a>
-        </li>
+        </li> --}}
 
         <!-- Support System -->
-        <li
+        {{-- <li
             class="menu-item {{ Route::is('news*', 'slider*', 'faq*', 'studentquery*', 'term*', 'privacy*', 'contact*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-headset"></i>
@@ -180,57 +198,7 @@
                     </a>
                 </li>
             </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-shield-check"></i>
-                <div data-i18n="Permissions">WEBSITE</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('heros.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="Hero">Hero</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('certifications.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="Certification">Certification</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('steps.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="Steps">Steps</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('tutors.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="Tutors">Tutors</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('testimonials.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="Testimonials">Testimonials</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('admin-events.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="Events">Events</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('faqs.index') }}" class="menu-link">
-                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <div data-i18n="FAQs">FAQs</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        </li> --}}
 
         {{-- <!-- System Settings -->
         <li class="menu-header small text-uppercase mt-4">
@@ -239,42 +207,6 @@
 
         <!-- Permissions -->
         {{-- <li class="menu-item {{ Route::is('users*') ? 'active open' : '' }}">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons ti ti-shield-check"></i>
-            <div data-i18n="Permissions">Permissions</div>
-        </a>
-        <ul class="menu-sub">
-            <li class="menu-item {{ Route::is('users') ? 'active' : '' }}">
-                <a href="{{ route('users') }}" class="menu-link">
-                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                    <div data-i18n="Users">Users</div>
-                </a>
-            </li>
-            <li class="menu-item {{ Route::is('users.permissions') ? 'active' : '' }}">
-                <a href="{{ route('users.permissions') }}" class="menu-link">
-                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                    <div data-i18n="User Permissions">User Permissions</div>
-                </a>
-            </li>
-            <li class="menu-item {{ Route::is('users.roles') ? 'active' : '' }}">
-                <a href="{{ route('users.roles') }}" class="menu-link">
-                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                    <div data-i18n="Role Permissions">Role Permissions</div>
-                </a>
-            </li>
-        </ul>
-        </li> --}}
-
-        @php
-        $user = Auth::user();
-        @endphp
-
-        @if ($user && $user->hasRole('Super Admin'))
-        <!-- System Settings -->
-        <li class="menu-header small text-uppercase mt-4">
-            <span class="menu-header-text">System Settings</span>
-        </li>
-        <li class="menu-item {{ Route::is('users*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-shield-check"></i>
                 <div data-i18n="Permissions">Permissions</div>
@@ -299,11 +231,44 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
+        {{-- @php
+            $user = Auth::user();
+        @endphp --}}
 
-        @endif
-
+        {{-- @if ($user && $user->hasRole('Super Admin'))
+            <!-- System Settings -->
+            <li class="menu-header small text-uppercase mt-4">
+                <span class="menu-header-text">System Settings</span>
+            </li>
+            <li class="menu-item {{ Route::is('users*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons ti ti-shield-check"></i>
+                    <div data-i18n="Permissions">Permissions</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Route::is('users') ? 'active' : '' }}">
+                        <a href="{{ route('users') }}" class="menu-link">
+                            <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                            <div data-i18n="Users">Users</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Route::is('users.permissions') ? 'active' : '' }}">
+                        <a href="{{ route('users.permissions') }}" class="menu-link">
+                            <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                            <div data-i18n="User Permissions">User Permissions</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Route::is('users.roles') ? 'active' : '' }}">
+                        <a href="{{ route('users.roles') }}" class="menu-link">
+                            <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                            <div data-i18n="Role Permissions">Role Permissions</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endif --}}
 
     </ul>
 </aside>
@@ -335,3 +300,78 @@
         pointer-events: none;
     }
 </style>
+
+<!-- Home Icons:
+
+ti ti-home — Home
+ti ti-home-outline — Home Outline
+User and Account Icons:
+
+ti ti-user — User
+ti ti-user-outline — User Outline
+ti ti-user-plus — User Plus
+ti ti-user-minus — User Minus
+ti ti-users — Users
+Settings and Tools:
+
+ti ti-settings — Settings
+ti ti-cog — Cog
+ti ti-wrench — Wrench
+ti ti-tool — Tool
+Navigation and Menu:
+
+ti ti-menu — Menu
+ti ti-arrow-right — Arrow Right
+ti ti-arrow-left — Arrow Left
+ti ti-arrow-up — Arrow Up
+ti ti-arrow-down — Arrow Down
+Social Media Icons:
+
+ti ti-facebook — Facebook
+ti ti-twitter — Twitter
+ti ti-instagram — Instagram
+ti ti-linkedin — LinkedIn
+ti ti-youtube — YouTube
+ti ti-pinterest — Pinterest
+Content and Document:
+
+ti ti-pencil — Pencil
+ti ti-clipboard — Clipboard
+ti ti-file — File
+ti ti-folder — Folder
+ti ti-cloud — Cloud
+Media and Multimedia:
+
+ti ti-video-camera — Video Camera
+ti ti-music — Music
+ti ti-headphone — Headphone
+ti ti-volume-up — Volume Up
+ti ti-volume-down — Volume Down
+ti ti-volume-off — Volume Off
+File Management:
+
+ti ti-download — Download
+ti ti-upload — Upload
+ti ti-trash — Trash
+ti ti-folder-open — Open Folder
+Interface and Design:
+
+ti ti-paint — Paint
+ti ti-font — Font
+ti ti-brush — Brush
+ti ti-text — Text
+Alerts and Notifications:
+
+ti ti-bell — Bell
+ti ti-bell-off — Bell Off
+ti ti-alert — Alert
+ti ti-alert-alt — Alert Alternative
+Miscellaneous:
+
+ti ti-search — Search
+ti ti-close — Close
+ti ti-check — Check
+ti ti-close-circle — Close Circle
+ti ti-refresh — Refresh
+ti ti-reload — Reload
+ti ti-time — Time -->

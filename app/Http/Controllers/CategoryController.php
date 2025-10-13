@@ -326,4 +326,18 @@ class CategoryController extends Controller
             ]);
         }
     }
+
+    public function categoriesWithCourses(){
+        try {
+            $data = Category::withWhereHas('courses',function($query){
+                $query->where('status',true);
+            })->where('status', 1)->get();
+            return view('students.course-list',compact('data'));
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }
