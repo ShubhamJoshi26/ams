@@ -94,7 +94,6 @@
     </div>
 </section>
 @include('web-pages.parts.connect')
-@include('web-pages.parts.tutors')
 
 
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Step;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Exception;
@@ -13,9 +14,10 @@ class StepController extends Controller
 {
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
             $data = Step::orderBy('order')->get();
-
+// dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('status', function ($data) {
@@ -45,19 +47,38 @@ class StepController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
-            'icon'        => 'nullable|string|max:255',
+            'icon'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'order'       => 'nullable|integer',
             'status'      => 'nullable|boolean',
         ]);
 
+        // Return validation error
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        // Get validated data
+        $data = $validator->validated();
+
+        // Handle image upload
+        if ($request->hasFile('icon')) {
+            $data['icon'] = uploadImage($request->file('icon'), 'steps', 'icon');
+        }
+
+        // Create step
         Step::create($data);
 
+        // Return success response
         return response()->json([
             'status'  => 'success',
-            'message' => 'Step added successfully!'
+            'message' => 'Step added successfully!',
         ]);
     }
 
@@ -68,21 +89,52 @@ class StepController extends Controller
 
     public function update(Request $request, Step $step)
     {
-        $data = $request->validate([
+        // Validate the request
+        $validator = Validator::make($request->all(), [
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
-            'icon'        => 'nullable|string|max:255',
+            'icon'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'order'       => 'nullable|integer',
             'status'      => 'nullable|boolean',
         ]);
 
-        $step->update($data);
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Step updated successfully!'
-        ]);
+        try {
+            $data = $validator->validated();
+
+            // Handle icon upload if a new file is provided
+            if ($request->hasFile('icon')) {
+                // Delete old icon if it exists
+                if ($step->icon && file_exists(public_path($step->icon))) {
+                    unlink(public_path($step->icon));
+                }
+
+                // Upload new icon
+                $data['icon'] = uploadImage($request->file('icon'), 'steps', 'icon');
+            }
+
+            // Update step fields
+            $step->update($data);
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Step updated successfully!',
+                'data'    => $step
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function destroy(Step $step)
     {

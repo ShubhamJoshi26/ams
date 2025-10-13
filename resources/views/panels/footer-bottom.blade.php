@@ -199,6 +199,7 @@
     }
 
     function toggleStatus(module, id, el) {
+        // console.log(module, id, el);return false;
     $.ajax({
         url: '/' + module + '/' + id + '/toggle',
         type: 'GET',

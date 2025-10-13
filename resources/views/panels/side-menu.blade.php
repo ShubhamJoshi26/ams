@@ -218,6 +218,12 @@
                     </a>
                 </li>
                 <li class="menu-item">
+                    <a href="{{ route('admin-events.index') }}" class="menu-link">
+                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                        <div data-i18n="Events">Events</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="{{ route('faqs.index') }}" class="menu-link">
                         <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                         <div data-i18n="FAQs">FAQs</div>

@@ -4,15 +4,17 @@
       <!-- Hero Text -->
       <div class="col-lg-6 mb-5 mb-lg-0">
         <p class="text-secondary mb-2">Trusted Online Certifications</p>
-        <h1 class="display-4 fw-bold mb-3">Advance your skills with job-ready certificates</h1>
+        <h1 class="display-4 fw-bold mb-3">{{ $hero->title }}</h1>
         <p class="text-secondary mb-4">
-          Expert-led lessons, measurable progress, and credentials recruiters recognize.
+          {{ $hero->subtitle }}
         </p>
         <ul class="list-unstyled d-flex flex-wrap gap-3 mb-4">
           <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Flexible schedules</li>
           <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Industry expert mentors</li>
           <li><i class="bi bi-check-circle-fill text-warning me-2"></i>Career-oriented programs</li>
+          <li><a href="{{ $hero->button_link }}" class="btn btn-primary">{{ $hero->button_text }}</a></li>
         </ul>
+        
       </div>
 
       <!-- Lead Form -->

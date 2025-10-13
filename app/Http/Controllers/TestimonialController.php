@@ -8,6 +8,7 @@ use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class TestimonialController extends Controller
 {
@@ -45,7 +46,8 @@ class TestimonialController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        // Validate input
+        $validator = Validator::make($request->all(), [
             'name'        => 'required|string|max:255',
             'designation' => 'nullable|string|max:255',
             'feedback'    => 'nullable|string',
@@ -53,16 +55,27 @@ class TestimonialController extends Controller
             'status'      => 'nullable|boolean',
         ]);
 
-        if ($request->hasFile('image')) {
-            $data['image'] = uploadImage($request->file('image'), 'testimonials'); // Upload to testimonials folder
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $validator->errors()->first()
+            ], 422);
         }
 
+        $data = $validator->validated();
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['image'] = uploadImage($request->file('image'), 'testimonials', 'image');
+        }
+
+        // Create testimonial
         Testimonial::create($data);
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Testimonial added successfully!'
-        ]);
+        ], 200);
     }
 
     public function edit(Testimonial $testimonial)
@@ -72,7 +85,7 @@ class TestimonialController extends Controller
 
     public function update(Request $request, Testimonial $testimonial)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name'        => 'required|string|max:255',
             'designation' => 'nullable|string|max:255',
             'feedback'    => 'nullable|string',
@@ -80,20 +93,33 @@ class TestimonialController extends Controller
             'status'      => 'nullable|boolean',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        $data = $validator->validated();
+
+        // Handle image upload
         if ($request->hasFile('image')) {
             if ($testimonial->image && file_exists(public_path($testimonial->image))) {
-                unlink(public_path($testimonial->image));
+                unlink(public_path($testimonial->image)); // Delete old file
             }
-            $data['image'] = uploadImage($request->file('image'), 'testimonials');
+            $data['image'] = uploadImage($request->file('image'), 'testimonials', 'image');
         }
 
         $testimonial->update($data);
 
         return response()->json([
-            'status'  => 'success',
-            'message' => 'Testimonial updated successfully!'
+            'status' => 'success',
+            'message' => 'Testimonial updated successfully!',
+            'data' => $testimonial
         ]);
     }
+
+
 
     public function destroy(Testimonial $testimonial)
     {

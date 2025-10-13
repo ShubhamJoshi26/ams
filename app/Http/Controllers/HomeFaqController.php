@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
+use App\Models\Homefaqs;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Exception;
@@ -13,7 +14,7 @@ class HomeFaqController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Faq::orderBy('id', 'desc')->get();
+            $data = Homefaqs::orderBy('id', 'desc')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -50,7 +51,7 @@ class HomeFaqController extends Controller
             'status'   => 'nullable|boolean',
         ]);
 
-        Faq::create($data);
+        Homefaqs::create($data);
 
         return response()->json([
             'status'  => 'success',
@@ -58,12 +59,12 @@ class HomeFaqController extends Controller
         ]);
     }
 
-    public function edit(Faq $faq)
+    public function edit(Homefaqs $faq)
     {
         return view('admin.faqs.edit', compact('faq'));
     }
 
-    public function update(Request $request, Faq $faq)
+    public function update(Request $request, Homefaqs $faq)
     {
         $data = $request->validate([
             'question' => 'required|string|max:255',
@@ -95,7 +96,7 @@ class HomeFaqController extends Controller
         }
     }
 
-    public function toggleStatus(Faq $faq)
+    public function toggleStatus(Homefaqs $faq)
     {
         $faq->status = !$faq->status;
         $faq->save();

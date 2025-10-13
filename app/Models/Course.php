@@ -56,6 +56,8 @@ class Course extends Model
     {
         return $this->hasMany(Subject::class)->with('videos', 'notes');
     }
-
-    
+    public function tutors()
+    {
+        return $this->hasMany(Tutor::class);
+    }
 }

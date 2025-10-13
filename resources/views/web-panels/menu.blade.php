@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-white py-3 sticky-top">
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="#">
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
       <img src="{{ asset('/assets/img/web-images/logo.jpg') }}" alt="CertifyPro Logo" class="img-fluid me-2" style="height:40px;">
       
     </a>
@@ -23,19 +23,19 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
         <li class="nav-item">
-          <a class="nav-link text-white fw-semibold px-3" href="#home">Home</a>
+          <a class="nav-link text-white fw-semibold px-3" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white fw-semibold px-3" href="#courses">Courses</a>
+          <a class="nav-link text-white fw-semibold px-3" href="/courses">Courses</a>
+        </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link text-white fw-semibold px-3" href="#certifications">My Certifications</a>
+              </li> -->
+        <li class="nav-item">
+          <a class="nav-link text-white fw-semibold px-3" href="/about-us">About Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white fw-semibold px-3" href="#certifications">My Certifications</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white fw-semibold px-3" href="#about">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white fw-semibold px-3" href="#contact">Contact</a>
+          <a class="nav-link text-white fw-semibold px-3" href="/contact">Contact</a>
         </li>
       </ul>
 
