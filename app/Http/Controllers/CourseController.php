@@ -13,10 +13,13 @@ use App\Http\Controllers\EasebuzzPaymentController;
 use App\Models\Students;
 use App\Models\CourseType;
 use App\Models\StudentCourse;
+use App\Models\Subject;
+use App\Models\Tutor;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CourseController extends Controller
 
@@ -135,8 +138,10 @@ class CourseController extends Controller
             'category_id' => 'required|exists:categories,id',
             'type_id' => 'required|exists:course_types,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'short_description' => 'nullable|string|max:255',
         ]);
-
+        $slug = Str::slug($request->slug) ?: Str::slug($request->name);
         if ($validator->fails()) {
             return response()->json([
                 'status'  => 'error',
@@ -163,6 +168,9 @@ class CourseController extends Controller
                 'added_by' => Auth::user()->id,
                 'image' => $imagePath,
                 'status' => 1,
+                'slug' => $slug,
+                'rating' => $request->rating,
+                'short_description' => $request->short_description,
             ]);
             // dd($course);
             return response()->json([
@@ -214,10 +222,12 @@ class CourseController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 'type_id' => 'required|exists:course_types,id',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'rating' => 'nullable|numeric|min:0|max:5',
+                'short_description' => 'nullable|string|max:255',
             ]);
 
             $course = Course::findOrFail($courseID);
-
+            $slug = Str::slug($request->slug) ?: Str::slug($request->name);
             if ($request->hasFile('image')) {
                 if ($course->image && file_exists(public_path('uploads/course_images/' . $course->image))) {
                     unlink(public_path('uploads/course_images/' . $course->image));
@@ -235,6 +245,9 @@ class CourseController extends Controller
                 'duration' => $request->duration,
                 'category_id' => $request->category_id,
                 'type_id' => $request->type_id,
+                'rating' => $request->rating,
+                'short_description' => $request->short_description,
+                'slug' => $slug,
                 'added_by' => Auth::user()->id,
             ]);
 
@@ -552,7 +565,7 @@ class CourseController extends Controller
 
 
     public function getCourseByType(Request $request, $typeId = 0)
-    
+
     {
         try {
             $studentId = $request->header('student_id');
@@ -569,9 +582,8 @@ class CourseController extends Controller
 
             // Get all course types based on conditions
             $courseTypesQuery = CourseType::where('status', 1)
-                ->with(['courses'=>function ($query) {
+                ->with(['courses' => function ($query) {
                     $query->where('status', 1);
-
                 }]);
 
             if ($typeId != 0) {
@@ -804,32 +816,32 @@ class CourseController extends Controller
             $limit = $request->header('limit', 10);
             $page = $request->header('page', 1);
             $studentId = $request->header('student_id');
-    
+
             // Build query
             $query = Course::with('category', 'users', 'subjects')
                 ->where('status', 1)
                 ->when(!empty($column) && !empty($value), function ($q) use ($column, $value) {
                     return $q->where($column, $value);
                 });
-    
+
             // Paginate result
             $courses = $query->paginate($limit, ['*'], 'page', $page);
-    
+
             // Get enrolled course IDs for student
             $enrolledCourseIds = [];
-    
+
             if ($studentId) {
                 $enrolledCourseIds = StudentCourse::where('student_id', $studentId)
                     ->pluck('course_id')
                     ->toArray();
             }
-    
+
             // Mark enrolled courses
             $courses->getCollection()->transform(function ($course) use ($enrolledCourseIds) {
                 $course->is_enrolled = in_array($course->id, $enrolledCourseIds);
                 return $course;
             });
-    
+
             // Return response
             return response()->json([
                 'status' => "success",
@@ -853,7 +865,7 @@ class CourseController extends Controller
             ]);
         }
     }
-    
+
 
 
 
@@ -907,5 +919,45 @@ class CourseController extends Controller
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+public function listPage()
+{
+    $categories = Category::where('status', 1)->get();
+
+    $courses = Course::with('category')
+        ->where('status', 1)
+        ->get(); // Load all courses initially
+
+    return view('web-pages.courses.list', compact('categories', 'courses'));
+}
+
+public function filterCourses(Request $request)
+{
+    $categoryId = $request->category_id;
+
+    if ($categoryId == 0) {
+        $courses = Course::with('category')->where('status', 1)->get();
+    } else {
+        $courses = Course::with('category')->where('status', 1)->where('category_id', $categoryId)->get();
+    }
+
+    return response()->json(['courses' => $courses]);
+}
+
+
+
+
+    public function detailsPage($request, $slug)
+    {
+        $course = Course::where('slug', $slug)->first();
+        $relatedCourses = Course::where('category_id', $course->category_id)
+            ->where('id', '!=', $course->id)
+            ->where('status', 1)
+            ->limit(4)
+            ->get();
+        $tutors = Tutor::where('id', '!=', $course->id)->where('status', 1)->get();
+        $subjects = Subject::where('course_id', $course->id)->where('status', 1)->get();
+
+        return view('web-pages.courses.details', compact('course', 'relatedCourses', 'tutors', 'subjects'));
     }
 }

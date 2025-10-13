@@ -3,8 +3,6 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/course-list.css') }}">
 <style>
-    /* Course Card / Info */
-
     .course-info img.course-img {
         border-radius: 15px;
         object-fit: cover;
@@ -17,23 +15,16 @@
         margin-bottom: 15px;
     }
 
-    .course-info .btn-teal {
+    .btn-teal {
         background-color: var(--primary-color);
         color: white;
     }
 
-    .course-info .btn-teal:hover {
+    .btn-teal:hover {
         background-color: var(--primary-color);
+        opacity: 0.9;
     }
 
-    /* Curriculum */
-    .curriculum h4 {
-        margin-top: 30px;
-        margin-bottom: 20px;
-    }
-
-
-    /* Instructor Info */
     .instructor-card {
         background: white;
         border-radius: 15px;
@@ -46,25 +37,9 @@
         border-radius: 50%;
     }
 
-    /* FAQs */
-    .faqs h4 {
-        margin-bottom: 20px;
-    }
-
-
-    /* Related Courses */
-    .related-courses h4 {
-        margin-bottom: 20px;
-    }
-
-    /* Responsive */
     @media(max-width: 992px) {
         .course-header h1 {
             font-size: 2rem;
-        }
-
-        .course-header p {
-            font-size: 1rem;
         }
 
         .course-info img.course-img {
@@ -81,80 +56,55 @@
 @endsection
 
 @section('content')
+
 <!-- Course Header -->
-<!-- <section class="course-header text-center">
-    <div class="container">
-        <h1 class="fw-bold">Full Stack Web Development</h1>
-        <p>Master modern web technologies and build professional projects to jumpstart your career.</p>
-        <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
-            <span class="btn btn-light border-0 px-4 py-2">Duration: 12 Weeks</span>
-            <span class="btn btn-light border-0 px-4 py-2">Level: Beginner</span>
-            <span class="btn btn-light border-0 px-4 py-2">Rating: ⭐ 4.8</span>
-        </div>
-    </div>
-</section> -->
 <section class="course-header mt-5 pb-5" style="padding-top: 80px; background-color: var(--primary-color); color: white;">
     <div class="container text-start text-md-center">
-        <h1 class="fw-bold">Full Stack Web Development</h1>
-        <p>Master modern web technologies and build professional projects to jumpstart your career.</p>
+        <h1 class="fw-bold">{{ $course->name }}</h1>
+        <p>{{ $course->short_description }}</p>
         <div class="d-flex justify-content-start justify-content-md-center flex-wrap gap-2 mt-3">
-            <span class="btn btn-light border-0 px-4 py-2">Duration: 12 Weeks</span>
-            <span class="btn btn-light border-0 px-4 py-2">Level: Beginner</span>
-            <span class="btn btn-light border-0 px-4 py-2">Rating: ⭐ 4.8</span>
+            <span class="btn btn-light border-0 px-4 py-2">Duration: {{ $course->duration }}</span>
+            <span class="btn btn-light border-0 px-4 py-2">Rating: ⭐ {{ $course->rating }}</span>
         </div>
     </div>
 </section>
-<!-- Course Info & Enrollment -->
+
+<!-- Course Info -->
 <section class="course-info py-5">
     <div class="container">
         <div class="row g-4">
+
+            <!-- Left: Main Course Info -->
             <div class="col-lg-8">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop" alt="Course Image" class="course-img mb-4">
-                <h2>Course Overview</h2>
-                <p>This course is designed for beginners who want to learn full stack web development. You'll master HTML, CSS, JavaScript, React, Node.js, and more by building real-world projects. By the end, you'll have a professional portfolio to showcase your skills to employers.</p>
+                @if(!empty($course->image))
+                <img src="{{ asset($course->image) }}" alt="Course Image" class="course-img mb-4" style="height: 400px; object-fit: contain; width: 100%;">
+                @endif
+
+                <!-- Description -->
+                <p>{{ $course->description }}</p>
 
                 <!-- Curriculum -->
-                <div class="curriculum">
+                @if(isset($subjects) && $subjects->isNotEmpty())
+                <div class="curriculum mt-4">
                     <h4>Course Curriculum</h4>
                     <div class="accordion" id="curriculumAccordion">
+                        @foreach($subjects as $subject)
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#moduleOne">
-                                    Module 1: HTML & CSS
+                            <h2 class="accordion-header" id="faqTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ 'faqCollapse'.$subject->id }}">
+                                    {{ $subject->name }}
                                 </button>
                             </h2>
-                            <div id="moduleOne" class="accordion-collapse collapse show" data-bs-parent="#curriculumAccordion">
+                            <div id="{{ 'faqCollapse'.$subject->id }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Learn the basics of web design, including semantic HTML, CSS layouts, and responsive design.
+                                    {{ $subject->description }}
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#moduleTwo">
-                                    Module 2: JavaScript & DOM
-                                </button>
-                            </h2>
-                            <div id="moduleTwo" class="accordion-collapse collapse" data-bs-parent="#curriculumAccordion">
-                                <div class="accordion-body">
-                                    Master JavaScript fundamentals, DOM manipulation, and interactive web features.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#moduleThree">
-                                    Module 3: React & Node.js
-                                </button>
-                            </h2>
-                            <div id="moduleThree" class="accordion-collapse collapse" data-bs-parent="#curriculumAccordion">
-                                <div class="accordion-body">
-                                    Build modern web applications with React for the frontend and Node.js for backend APIs.
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
+                @endif
 
                 <!-- FAQs -->
                 <div class="faqs mt-5">
@@ -188,93 +138,61 @@
                 </div>
             </div>
 
-            <!-- Sidebar: Instructor & Enroll -->
+            <!-- Right: Instructor & Related Courses -->
             <div class="col-lg-4">
-                <div class="sticky-top" style="top: 100px;z-index:0;"> <!-- Sticky container with offset -->
-                    <!-- Instructor Card -->
+                <div class="sticky-top" style="top: 100px; z-index: 0;">
+
+                    <!-- Instructor -->
+                    @if(isset($tutors) && $tutors->isNotEmpty())
+                    @foreach($tutors as $tutor)
                     <div class="instructor-card text-center mb-5">
-                        <img src="https://i.pravatar.cc/100?img=5" alt="Instructor" width="100" height="100" class="rounded-circle">
-                        <h5 class="mt-3">Instructor: Alex Kim</h5>
-                        <p class="text-secondary small">Senior Full Stack Developer with 10+ years of industry experience.</p>
+                        @if(!empty($tutor->image))
+                        <img src="{{ asset($tutor->image) }}" alt="{{ $tutor->name }}" width="100" height="100" class="rounded-circle">
+                        @endif
+                        <h5 class="mt-3">{{ $tutor->name }} <span class="text-muted">({{ $tutor->designation }})</span></h5>
+                        <p class="text-secondary small mb-1">{{ $tutor->experience }}</p>
+                        <p class="text-muted small">{{ $tutor->bio }}</p>
                         <button class="btn btn-teal w-100 mt-3">Enroll Now</button>
                     </div>
+                    @endforeach
+                    @endif
 
                     <!-- Related Courses -->
                     <div class="related-courses">
                         <h4 class="fw-bold mb-4">Related Courses</h4>
                         <div class="row g-3">
-                            <!-- Course Card 1 -->
+                            @foreach($relatedCourses as $relatedCourse)
                             <div class="col-md-6 col-lg-12">
                                 <div class="card shadow-sm border-0 rounded-3 overflow-hidden h-100 hover-shadow transition">
                                     <div class="row g-0 align-items-center">
                                         <div class="col-4">
-                                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop"
-                                                class="img-fluid" alt="Data Analytics">
+                                            <img src="{{ asset($relatedCourse->image) }}" class="img-fluid" alt="{{ $relatedCourse->name }}" style="height: 100px; object-fit: contain; width: 100%;">
                                         </div>
                                         <div class="col-8">
                                             <div class="card-body p-2">
-                                                <h6 class="fw-bold mb-1">Data Analytics Foundations</h6>
-                                                <div class="d-flex align-items-center mb-1">
-                                                    <span class="text-warning me-2">⭐ 4.8</span>
-                                                    <small class="text-muted">Alex Kim</small>
+                                                <h6 class="fw-bold mb-1">{{ $relatedCourse->name }}</h6>
+                                                <div class="d-flex align-items-start justify-content-start mb-1 flex-wrap flex-column">
+                                                    <p class="text-warning mb-0">Ratting: ⭐ {{ $relatedCourse->rating }}</p>
+                                                    <p class="text-muted mb-0">Duration: {{ $relatedCourse->duration }}</p>
                                                 </div>
-                                                <a href="#" class="stretched-link text-teal fw-bold">View Course</a>
+                                                <a href="{{ route('course.details', ['category' => $relatedCourse->category->name ?? 'courses', 'slug' => $relatedCourse->slug]) }}" class="stretched-link text-teal fw-bold">
+                                                    View Course
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Course Card 2 -->
-                            <div class="col-md-6 col-lg-12">
-                                <div class="card shadow-sm border-0 rounded-3 overflow-hidden h-100 hover-shadow transition">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-4">
-                                            <img src="https://images.unsplash.com/photo-1581091012184-7cbe86d2f6be?w=200&h=100&fit=crop"
-                                                class="img-fluid" alt="Cloud Computing">
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="card-body p-2">
-                                                <h6 class="fw-bold mb-1">Cloud Computing Basics</h6>
-                                                <div class="d-flex align-items-center mb-1">
-                                                    <span class="text-warning me-2">⭐ 4.6</span>
-                                                    <small class="text-muted">John Doe</small>
-                                                </div>
-                                                <a href="#" class="stretched-link text-teal fw-bold">View Course</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Course Card 3 -->
-                            <div class="col-md-6 col-lg-12">
-                                <div class="card shadow-sm border-0 rounded-3 overflow-hidden h-100 hover-shadow transition">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-4">
-                                            <img src="https://images.unsplash.com/photo-1581092918360-efc3a36eb0b8?w=200&h=100&fit=crop"
-                                                class="img-fluid" alt="AI & ML">
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="card-body p-2">
-                                                <h6 class="fw-bold mb-1">AI & Machine Learning</h6>
-                                                <div class="d-flex align-items-center mb-1">
-                                                    <span class="text-warning me-2">⭐ 4.9</span>
-                                                    <small class="text-muted">Jane Smith</small>
-                                                </div>
-                                                <a href="#" class="stretched-link text-teal fw-bold">View Course</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 @endsection
+@section('scripts')
+<script>
+    // Custom JS if needed
+</script>

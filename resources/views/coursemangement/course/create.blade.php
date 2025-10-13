@@ -29,24 +29,36 @@
             </select>
         </div>
 
-        
+
         <!-- Course Name -->
         <div class="col-md-6">
             <label for="name" class="form-label">Course Name <span class="text-danger">*</span></label>
             <input type="text" name="name" id="name" class="form-control" required placeholder="Enter course name">
         </div>
-
+        <div class="col-md-6">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" name="slug" id="slug" class="form-control" placeholder="Enter slug">
+            <small class="text-muted">Example: my-event-title</small>
+        </div>
         <!-- Description -->
         <div class="col-md-12">
             <label for="description" class="form-label">Description</label>
             <textarea name="description" id="description" class="form-control" rows="3" placeholder="Enter course description"></textarea>
         </div>
-         <!-- Image Upload -->
-         <div class="col-md-12">
+        <!-- Image Upload -->
+        <div class="col-md-12">
             <label for="image" class="form-label">Course Image <span class="text-danger">*</span></label>
             <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
         </div>
+        <div class="col-md-12">
+            <label for="rating" class="form-label">Rating (0–5)</label>
+            <input type="number" name="rating" id="rating" class="form-control" step="0.1" min="0" max="5">
+        </div>
 
+        <div class="col-md-12">
+            <label for="short_description" class="form-label">Short Description</label>
+            <textarea name="short_description" id="short_description" class="form-control" rows="2" maxlength="255"></textarea>
+        </div>
         <!-- Price & Duration -->
         <div class="col-md-6">
             <label for="price" class="form-label">Price (₹) <span class="text-danger">*</span></label>
@@ -58,7 +70,7 @@
             <input type="text" name="duration" id="duration" class="form-control" required placeholder="e.g. 3 Months">
         </div>
 
-        
+
 
         <!-- Submit Buttons -->
         <div class="col-12 text-center mt-3">
@@ -70,21 +82,41 @@
 
 <!-- jQuery Validation -->
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#course-form").validate({
             rules: {
-                name: { required: true },
-                price: { required: true, number: true, min: 0 },
-                duration: { required: true },
-                category_id: { required: true }
+                name: {
+                    required: true
+                },
+                price: {
+                    required: true,
+                    number: true,
+                    min: 0
+                },
+                duration: {
+                    required: true
+                },
+                category_id: {
+                    required: true
+                }
             },
             messages: {
-                name: { required: "Please enter course name" },
-                price: { required: "Please enter price", number: "Enter a valid number", min: "Price cannot be negative" },
-                duration: { required: "Please enter duration" },
-                category_id: { required: "Please select a category" }
+                name: {
+                    required: "Please enter course name"
+                },
+                price: {
+                    required: "Please enter price",
+                    number: "Enter a valid number",
+                    min: "Price cannot be negative"
+                },
+                duration: {
+                    required: "Please enter duration"
+                },
+                category_id: {
+                    required: "Please select a category"
+                }
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 $(':input[type="submit"]').prop('disabled', true);
                 var formData = new FormData(form);
                 formData.append("_token", "{{ csrf_token() }}");
@@ -96,7 +128,7 @@
                     processData: false,
                     contentType: false,
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         $(':input[type="submit"]').prop('disabled', false);
                         if (response.status == 'success') {
                             toastr.success(response.message);
@@ -106,7 +138,7 @@
                             toastr.error(response.message);
                         }
                     },
-                    error: function (response) {
+                    error: function(response) {
                         $(':input[type="submit"]').prop('disabled', false);
                         toastr.error(response.responseJSON.message);
                     }

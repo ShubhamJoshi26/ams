@@ -16,9 +16,9 @@
             <select name="type_id" id="type_id" class="form-select" required>
                 <option value="">Select Course Type</option>
                 @foreach ($courseType as $id => $name)
-                    <option value="{{ $id }}" {{ $course->type_id == $id ? 'selected' : '' }}>
-                        {{ $name }}
-                    </option>
+                <option value="{{ $id }}" {{ $course->type_id == $id ? 'selected' : '' }}>
+                    {{ $name }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -30,8 +30,9 @@
             <select name="category_id" id="edit_category_id" class="form-select" required>
                 <option value="">Select Category</option>
                 @foreach ($category as $id => $name)
-                    <option value="{{ $id }}" {{ $course->category_id == $id ? 'selected' : '' }}>
-                        {{ $name }}</option>
+                <option value="{{ $id }}" {{ $course->category_id == $id ? 'selected' : '' }}>
+                    {{ $name }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -42,7 +43,11 @@
             <input type="text" name="name" id="edit_name" class="form-control" required
                 value="{{ $course->name }}">
         </div>
-
+ <div class="col-md-6">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" name="slug" id="slug" class="form-control" placeholder="Enter slug" value="{{ $course->slug }}">
+            <small class="text-muted">Example: my-event-title</small>
+        </div>
         <!-- Description -->
         <div class="col-md-12">
             <label for="edit_description" class="form-label">Description</label>
@@ -65,7 +70,17 @@
             <input type="number" name="price" id="edit_price" class="form-control" required min="0"
                 step="0.01" value="{{ $course->price }}">
         </div>
+        <div class="col-md-12">
+            <label for="rating" class="form-label">Rating (0–5)</label>
+            <input type="number" name="rating" id="rating" class="form-control" step="0.1" min="0" max="5"
+                value="{{ $course->rating }}">
+        </div>
 
+        <div class="col-md-12">
+            <label for="short_description" class="form-label">Short Description</label>
+            <textarea name="short_description" id="short_description" class="form-control" rows="2"
+                maxlength="255">{{$course->short_description}}</textarea>
+        </div>
         <div class="col-md-6">
             <label for="edit_duration" class="form-label">Duration <span class="text-danger">*</span></label>
             <input type="text" name="duration" id="edit_duration" class="form-control" required

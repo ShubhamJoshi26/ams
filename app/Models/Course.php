@@ -20,7 +20,10 @@ class Course extends Model
         'type_id',
         'image',
         'status',
-        'added_by'
+        'added_by',
+        'rating',
+        'short_description',
+        'slug',
     ];
 
     /**

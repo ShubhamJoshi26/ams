@@ -22,17 +22,15 @@ class WebHomeController extends Controller
         $faqs = Homefaqs::where('status', 1)->get();
         $testimonials = Testimonial::where('status', 1)->get();
         $events = Event::where('status', 1)->get();
-        // Load categories with courses and tutors
         $categories = Category::with('courses.tutors')->where('status', 1)->get();
-
-        // Get all unique tutors across all categories/courses
         $allTutors = $categories
             ->flatMap(function ($category) {
                 return $category->courses->flatMap->tutors;
             })
             ->unique('id')
-            ->values(); // reset array keys
-        // dd($events->all());
+            ->values();
+        $categoryCourses = Category::with('courses')->where('status', 1)->get();
+        // dd($categoryCourses);
         return view('web-pages.index', compact(
             'hero',
             'certifications',
@@ -41,7 +39,8 @@ class WebHomeController extends Controller
             'allTutors',
             'faqs',
             'testimonials',
-            'events'
+            'events',
+            'categoryCourses'
         ));
     }
 

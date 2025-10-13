@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeFaqController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\TestimonialController;
@@ -42,8 +43,11 @@ Route::get('/tutors/category/{categorySlug}', [WebHomeController::class, 'getTut
 
 
 Route::view('/contact', 'web-pages.contact')->name('contact');
-Route::view('/courses', 'web-pages.courses.list')->name('courses');
-Route::view('/details', 'web-pages.courses.details')->name('details');
+Route::get('/courses', [CourseController::class, 'listPage'])->name('courses');
+Route::get('/courses/filter', [CourseController::class, 'filterCourses'])->name('courses.filter');
+
+
+Route::get('/course/{category}/{slug}', [CourseController::class,'detailsPage'])->name('course.details');
 Route::get('/events', [EventController::class, 'showEvents'])->name('events.list');
-Route::get('/event/{slug}', [EventController::class, 'eventDetails'])->name('events.details');
+Route::get('/{event}/{slug}', [EventController::class, 'eventDetails'])->name('events.details');
 Route::view('/about-us', 'web-pages.about')->name('about');
