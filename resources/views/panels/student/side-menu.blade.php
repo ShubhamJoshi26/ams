@@ -3,7 +3,7 @@
     <div class="app-brand demo">
         <div class="d-flex align-items-center">
             {{-- <i class="ti ti-apps fs-3 text-primary"></i> --}}
-            <img src="{{ asset('assets/img/logo/logo 3.jpg') }}" alt="Skill App Logo" style="height: 60px; width: auto;" />
+            <img src="{{ asset('assets/img/logo/sanidhya_logo.jpg') }}" alt="Skill App Logo" style="height: 60px; width: auto;object-fit: contain;" />
             <h4 class="mb-0 ms-2">Skill App</h4>
         </div>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -37,6 +37,12 @@
             <a href="{{ route('student.mycourses') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-user"></i>
                 <div data-i18n="My Courses">My Courses</div>
+            </a>
+        </li>
+        <li class="menu-item {{ Route::is('student.courses') ? 'active' : '' }}">
+            <a href="{{ route('student.courses') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="Courses">Courses</div>
             </a>
         </li>
 

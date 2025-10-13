@@ -381,11 +381,11 @@
                     </div>
                     <div class="summary-item">
                         <span>In Progress</span>
-                        <span class="summary-badge">{{count($studentOtherData->data->on_going_courses)}}</span>
+                        <span class="summary-badge">{{count($studentOtherData->ongoing)}}</span>
                     </div>
                     <div class="summary-item">
                         <span>Completed</span>
-                        <span class="summary-badge">{{count($studentOtherData->data->completed_courses)}}</span>
+                        <span class="summary-badge">{{count($studentOtherData->completed)}}</span>
                     </div>
                     {{-- <div class="summary-item">
                         <span>Certificates</span>

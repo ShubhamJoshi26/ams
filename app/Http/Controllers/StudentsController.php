@@ -142,46 +142,32 @@ class StudentsController extends Controller
     public static function getStudentDetails($mobile)
     {
         try {
-            // $student = Students::where('mobile', $mobile)->with('progress')->first();
-            $student = Students::where('mobile', $mobile)
-                ->where('status', 1)
-                ->with('progress')
-                ->first();
 
-            //    dd($student);
+                $completeCourse = [];
+                $incomleteCourse = [];
+                $studentCourses = StudentCourse::where('student_id',Auth::guard('student')->user()->id)->with('progress')->get();
+                foreach($studentCourses as $key => $course){
+                    $courseData = $course->with('course')->first();
+                    $studentProgress = 0;
+                    foreach($course->progress as $count => $progress){
+                        $studentProgress = $studentProgress + $progress->progress;
+                        $c = $count+1;
+                    }
+                    $courseProgress = $studentProgress/$c;
+                    $courseData->course->progress = $courseProgress;
+                    if($courseProgress>95){
+                        $completeCourse[] = $courseData->course;
+                        // $completeCourse[$key]['progress'] = $courseProgress;
 
-            if (!$student) {
-                return response()->json(['status' => 'error', 'message' => 'No student found with this mobile number']);
-            }
-
-            $onGoingCourses = [];
-            $completedCourses = [];
-
-            foreach ($student->progress as $course) {
-                $courseDetails = [
-                    'course_id' => $course->course_id,
-                    'subject_id' => $course->subject_id,
-                    'subject_name' => $course->subject_name,
-                    'progress' => round($course->progress, 2),
-                    'watch_time' => $course->watch_time,
-                    'total_duration' => $course->total_duration,
-                    'status' => $course->progress >= 90 ? 'Completed' : 'Ongoing'
-                ];
-
-                if ($course->progress >= 90) {
-                    $completedCourses[] = $courseDetails;
-                } else {
-                    $onGoingCourses[] = $courseDetails;
+                    }else{
+                        $incomleteCourse[] = $courseData->course;
+                        // $incomleteCourse[$key]['progress'] = $courseProgress;
+                    }
                 }
-            }
-
             return response()->json([
-                'status' => 'success',
-                'data' => [
-                    'student' => $student,
-                    'on_going_courses' => $onGoingCourses,
-                    'completed_courses' => $completedCourses
-                ]
+                // 'course' => $studentCourses,
+                'completed' => $completeCourse,
+                'ongoing' => $incomleteCourse
             ]);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
@@ -1196,6 +1182,7 @@ class StudentsController extends Controller
             $id = Auth::guard('student')->user()->id;
             $student = Students::with('studentCourses')->findOrFail($id);
             $studentOtherData = self::getStudentDetails(Auth::guard('student')->user()->mobile)->getData();
+            // dd($studentOtherData);
             return view('students.mycourses',compact('student','studentOtherData'));
         }catch(\Exception $e){
 

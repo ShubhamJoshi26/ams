@@ -24,6 +24,7 @@ use App\Http\Controllers\TermsConditionController;
 use App\Http\Controllers\StudentProgressController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Student\StudentAuthController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -70,6 +71,7 @@ Route::prefix('student')->name('student.')->group(function () {
         Route::get('/edit/profile',[StudentsController::class,'editProfile'])->name('edit.profile');
         Route::post('/update/profile/{id}',[StudentsController::class,'updateStudents'])->name('update.profile');
         Route::get('/mycourses',[StudentsController::class,'studentCourse'])->name('mycourses');
+        Route::get('/courses',[CategoryController::class,'categoriesWithCourses'])->name('courses');
     });
 });
 
