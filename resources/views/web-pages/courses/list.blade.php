@@ -63,12 +63,12 @@
 </section>
 @endsection
 
-@section('script')
+@section('scripts')
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
 
 <script>
-    $(document).ready(function() {
+    // $(document).ready(function() {
         // Handle category filter clicks
         $('.category-item').on('click', function() {
             let categoryId = $(this).data('id');
@@ -143,6 +143,6 @@
                 }
             });
         });
-    });
+    // });
 </script>
 @endsection
